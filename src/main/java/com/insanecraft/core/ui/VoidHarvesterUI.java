@@ -24,7 +24,7 @@ public class VoidHarvesterUI {
     public UiPanel render(VoidHarvesterState state, PlayerInventory inventory) {
         List<UiLine> lines = new ArrayList<>();
         lines.add(new UiLine("Tier", state.getTier().name()));
-        lines.add(new UiLine("Fuel Stored", String.valueOf(state.getFuel())));
+        lines.add(new UiLine("Fuel Stored", String.valueOf(state.getStoredFuel())));
         lines.add(new UiLine("Fuel Cost", String.valueOf(state.getTier().getFuelCost())));
         lines.add(new UiLine("Output Per Cycle", String.valueOf(state.getTier().getOutputPerCycle())));
         lines.add(new UiLine("Void Fuel", String.valueOf(inventory.getCount("void_fuel"))));
