@@ -74,25 +74,9 @@ public class OreUpgraderBlock extends Block {
         }
 
         heldStack.decrement(1);
-        removeItems(player.getInventory(), Items.DIAMOND_BLOCK, requiredDiamonds);
+        player.getInventory().remove(Items.DIAMOND_BLOCK, requiredDiamonds);
         player.giveItemStack(new ItemStack(InsaneCraftBlocks.OVERENCHANTMENT_TABLE));
         world.playSound(null, player.getBlockPos(), SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, SoundCategory.BLOCKS, 0.9f, 1.0f);
         return ActionResult.CONSUME;
-    }
-
-    private void removeItems(net.minecraft.entity.player.PlayerInventory inventory, Item item, int count) {
-        int remaining = count;
-        for (int slot = 0; slot < inventory.size() && remaining > 0; slot++) {
-            ItemStack stack = inventory.getStack(slot);
-            if (!stack.isOf(item)) {
-                continue;
-            }
-            int toRemove = Math.min(remaining, stack.getCount());
-            stack.decrement(toRemove);
-            if (stack.isEmpty()) {
-                inventory.setStack(slot, ItemStack.EMPTY);
-            }
-            remaining -= toRemove;
-        }
     }
 }
