@@ -1,0 +1,18 @@
+{
+  "itemGroup.insanecraft": "InsaneCraft",
+  "block.insanecraft.overenchantment_table": "Overenchantment Table",
+  "block.insanecraft.xp_generator": "XP Generator",
+  "block.insanecraft.ruby_forge": "Ruby Forge",
+  "block.insanecraft.moonstone_ritual": "Moonstone Ritual",
+  "block.insanecraft.celestial_altar": "Celestial Altar",
+  "block.insanecraft.storm_totem": "Storm Totem",
+  "block.insanecraft.void_harvester": "Void Harvester",
+  "message.insanecraft.overenchantment_table": "The table hums with forbidden power.",
+  "message.insanecraft.xp_generator": "The generator spins up.",
+  "message.insanecraft.xp_generator_grant": "You absorb a bit of stored XP.",
+  "message.insanecraft.ruby_forge": "The forge glows with ruby heat.",
+  "message.insanecraft.moonstone_ritual": "The ritual circle whispers under moonlight.",
+  "message.insanecraft.celestial_altar": "Starlight answers your touch.",
+  "message.insanecraft.storm_totem": "The totem crackles with storm energy.",
+  "message.insanecraft.void_harvester": "The harvester awaits void fuel."
+}
