@@ -31,6 +31,10 @@
 - Sound
 - Cooldown
 
+**Crafting Recipe**
+- 8x Iron Blocks
+- 1x Diamond Block
+
 ---
 
 ### Overenchantment Table
@@ -94,6 +98,12 @@
 - Visual change per tier.
 - Particle intensity increases.
 
+**Crafting Recipe**
+- 4x Iron Blocks
+- 4x Emeralds
+- 2x Redstone
+- 1x Bottle o' Enchanting
+
 ---
 
 ## 🟣 New Ores & Materials
@@ -118,6 +128,11 @@
 ### Moonstone
 - Spawns (define biome/height rules in generator).
 
+**Crafting Recipe**
+- 4x Amethyst Shards
+- 2x Glowstone Dust
+- 1x Ender Pearl
+
 ---
 
 ## ✨ Unique Systems
@@ -125,17 +140,43 @@
 ### Ruby Forge
 A custom forge that upgrades ruby gear tiers using rare materials, producing stronger gear stats.
 
+**Crafting Recipe**
+- 4x Diamond Blocks
+- 2x Blaze Rods
+- 1x Netherite Ingot
+- 2x Anvils
+
 ### Moonstone Ritual
 A ritual pedestal that consumes moonstone + rare materials to grant a **Moonstone Blessing** token.
+
+**Crafting Recipe**
+- 4x Gold Blocks
+- 4x Ender Pearls
+- 1x Amethyst Block
 
 ### Celestial Altar
 Consumes rare offerings plus **starlight** to craft celestial items like **Celestial Cores** or **Astral Focus** artifacts.
 
+**Crafting Recipe**
+- 5x Quartz Blocks
+- 1x Moonstone
+- 1x Nether Star
+
 ### Storm Totem
 Charge a totem with storm materials to summon escalating weather events (Breeze → Tempest → Cataclysm).
 
+**Crafting Recipe**
+- 4x Copper Blocks
+- 4x Lightning Rods
+- 1x Redstone Block
+
 ### Void Harvester
 A fuel-powered block entity that generates **Void Fragments**, with upgrades to improve cycle speed and output.
+
+**Crafting Recipe**
+- 6x Obsidian
+- 2x Ender Eyes
+- 1x Nether Star
 
 ---
 

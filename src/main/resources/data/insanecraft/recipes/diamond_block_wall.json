@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:diamond_block"
+    },
+    {
+      "item": "minecraft:cobblestone_wall"
+    }
+  ],
+  "result": {
+    "item": "insanecraft:diamond_block_wall"
+  }
+}
