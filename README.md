@@ -165,15 +165,3 @@ bash export_mod.sh
 ```
 
 This creates `dist/insanecraft-demo.jar` with `com.insanecraft.InsaneCraftMod` as the main class.
-
-## Fabric Setup (Minecraft)
-This repo now includes a minimal Fabric setup so the mod loads inside Minecraft:
-
-1. Install Java 17.
-2. Run the dev client (ensure Java 17 is used):
-   ```bash
-   JAVA_HOME=/path/to/java17 gradle runClient
-   ```
-3. The mod entrypoint is `com.insanecraft.fabric.InsaneCraftFabricMod` and initializes the core systems.
-
-> Note: Block/item registration and assets still need to be wired into Fabric registries for in-game content.
