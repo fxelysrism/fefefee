@@ -1,6 +1,7 @@
 package com.insanecraft.core.enchant;
 
 import com.insanecraft.core.item.ItemStack;
+import com.insanecraft.core.player.PlayerInventory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +56,36 @@ public class XPEnhancer {
         }
         EnchantedItem item = new EnchantedItem(baseItemId, Map.of(enchantId, level));
         return Optional.of(item);
+    }
+
+    public Optional<XpEnhancementResult> applyWithInventory(
+        String baseItemId,
+        String enchantId,
+        int level,
+        int playerXpLevels,
+        List<ItemStack> materials,
+        PlayerInventory inventory
+    ) {
+        Optional<EnhancementRecipe> recipe = findRecipe(enchantId);
+        if (recipe.isEmpty()) {
+            return Optional.empty();
+        }
+        EnhancementRecipe value = recipe.get();
+        if (!table.canApply(enchantId, level, true)) {
+            return Optional.empty();
+        }
+        if (playerXpLevels < value.getRequiredXpLevels()) {
+            return Optional.empty();
+        }
+        if (!hasMaterials(value.getMaterials(), materials)) {
+            return Optional.empty();
+        }
+        if (!inventory.consumeAll(value.getMaterials())) {
+            return Optional.empty();
+        }
+        EnchantedItem item = new EnchantedItem(baseItemId, Map.of(enchantId, level));
+        int remainingXp = playerXpLevels - value.getRequiredXpLevels();
+        return Optional.of(new XpEnhancementResult(item, remainingXp));
     }
 
     private boolean hasMaterials(List<ItemStack> required, List<ItemStack> provided) {

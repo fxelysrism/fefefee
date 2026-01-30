@@ -28,6 +28,18 @@ import com.insanecraft.core.service.CraftingService;
 import com.insanecraft.core.service.OreUpgradeService;
 import com.insanecraft.core.totem.StormTotem;
 import com.insanecraft.core.totem.StormTotemCharge;
+import com.insanecraft.core.ui.CelestialAltarUI;
+import com.insanecraft.core.ui.CraftingUI;
+import com.insanecraft.core.ui.MoonstoneRitualUI;
+import com.insanecraft.core.ui.OverenchantmentTableUI;
+import com.insanecraft.core.ui.OreUpgraderUI;
+import com.insanecraft.core.ui.RubyForgeUI;
+import com.insanecraft.core.ui.StormTotemUI;
+import com.insanecraft.core.ui.UiActionResult;
+import com.insanecraft.core.ui.UiPanel;
+import com.insanecraft.core.ui.VoidHarvesterUI;
+import com.insanecraft.core.ui.XPEnhancerUI;
+import com.insanecraft.core.ui.XPGeneratorUI;
 import com.insanecraft.core.xp.XPGenerator;
 import com.insanecraft.core.xp.XPGeneratorState;
 
@@ -272,53 +284,112 @@ public final class InsaneCraftMod {
         inventory.add(new ItemStack("void_fuel", 40));
         inventory.add(new ItemStack("void_fragment", 24));
 
-        Optional<ItemStack> oreUpgrade = mod.getOreUpgradeService().upgrade(List.of(
+        int playerXpLevels = 40;
+
+        OreUpgraderUI oreUpgraderUI = new OreUpgraderUI(mod.oreUpgrader);
+        UiPanel oreUpgraderPanel = oreUpgraderUI.render(List.of(
             new ItemStack("crying_obsidian", 1),
             new ItemStack("diamond_block", 8)
         ), inventory);
-        System.out.println("Upgrade result: " + oreUpgrade.orElse(null));
+        System.out.println("Ore Upgrader UI: " + oreUpgraderPanel);
 
-        Optional<ItemStack> crafted = mod.getCraftingService().craft(List.of(
+        UiActionResult<ItemStack> oreUpgrade = oreUpgraderUI.upgrade(List.of(
+            new ItemStack("crying_obsidian", 1),
+            new ItemStack("diamond_block", 8)
+        ), inventory);
+        System.out.println("Upgrade result: " + oreUpgrade.payload().orElse(null));
+
+        CraftingUI craftingUI = new CraftingUI(mod.getCraftingService(), mod.getRecipeRegistry());
+        UiPanel craftingPanel = craftingUI.render(List.of(
             new ItemStack("crying_obsidian", 4),
             new ItemStack("diamond_block", 2),
             new ItemStack("nether_star", 1)
-        ), inventory, 25);
-        System.out.println("Crafting output: " + crafted.orElse(null));
+        ), playerXpLevels, inventory);
+        System.out.println("Crafting UI: " + craftingPanel);
+        UiActionResult<ItemStack> crafted = craftingUI.craft(List.of(
+            new ItemStack("crying_obsidian", 4),
+            new ItemStack("diamond_block", 2),
+            new ItemStack("nether_star", 1)
+        ), inventory, playerXpLevels);
+        System.out.println("Crafting output: " + crafted.payload().orElse(null));
+        if (crafted.xpDelta().isPresent()) {
+            playerXpLevels += crafted.xpDelta().getAsInt();
+        }
 
         System.out.println("Overenchantments: " + mod.listOverenchantments());
         System.out.println("Can apply fortune 15: " + mod.canApplyOverenchant("fortune", 15, true));
 
-        Optional<EnchantedItem> enchanted = mod.xpEnhancer.apply(
+        OverenchantmentTableUI overenchantmentTableUI = new OverenchantmentTableUI(mod.overenchantmentTable);
+        System.out.println("Overenchantment UI: " + overenchantmentTableUI.render(true));
+
+        XPEnhancerUI xpEnhancerUI = new XPEnhancerUI(mod.xpEnhancer);
+        System.out.println("XP Enhancer UI: " + xpEnhancerUI.render(
+            "fortune",
+            15,
+            playerXpLevels,
+            List.of(new ItemStack("ruby_gem", 2), new ItemStack("xp_crystal", 1)),
+            inventory
+        ));
+        UiActionResult<EnchantedItem> enchanted = xpEnhancerUI.apply(
             "ruby_pickaxe",
             "fortune",
             15,
-            35,
-            List.of(new ItemStack("ruby_gem", 2), new ItemStack("xp_crystal", 1))
+            playerXpLevels,
+            List.of(new ItemStack("ruby_gem", 2), new ItemStack("xp_crystal", 1)),
+            inventory
         );
-        System.out.println("Enchanted item: " + enchanted.orElse(null));
+        System.out.println("Enchanted item: " + enchanted.payload().orElse(null));
+        if (enchanted.xpDelta().isPresent()) {
+            playerXpLevels += enchanted.xpDelta().getAsInt();
+        }
 
         XPGeneratorState state = mod.createGeneratorState();
-        int requiredXp = mod.getXpGenerator().getRequiredXpForNextLevel(state.getLevel());
-        state.tryUpgrade(10, requiredXp, mod.getXpGenerator().getMaxLevel());
+        XPGeneratorUI xpGeneratorUI = new XPGeneratorUI(mod.getXpGenerator());
+        System.out.println("XP Generator UI (before): " + xpGeneratorUI.render(state, inventory));
+        xpGeneratorUI.upgrade(2, inventory, state);
         System.out.println("XP Generator level: " + state.getLevel());
+        System.out.println("XP Generator UI: " + xpGeneratorUI.render(state, inventory));
 
-        Optional<GearAttributes> forgeResult = mod.getRubyForge().upgrade(
+        RubyForgeUI rubyForgeUI = new RubyForgeUI(mod.getRubyForge());
+        System.out.println("Ruby Forge UI: " + rubyForgeUI.render(
+            RubyTier.LEGENDARY,
+            6.0,
+            1.2,
+            List.of(new ItemStack("ruby_gem", 2), new ItemStack("nether_star", 1)),
+            inventory
+        ));
+        UiActionResult<GearAttributes> forgeResult = rubyForgeUI.upgrade(
             RubyTier.LEGENDARY,
             6.0,
             1.2,
             List.of(new ItemStack("ruby_gem", 2), new ItemStack("nether_star", 1)),
             inventory
         );
-        System.out.println("Ruby forge result: " + forgeResult.orElse(null));
+        System.out.println("Ruby forge result: " + forgeResult.payload().orElse(null));
 
-        ItemStack blessing = mod.getMoonstoneRitual().perform(
+        MoonstoneRitualUI moonstoneRitualUI = new MoonstoneRitualUI(mod.getMoonstoneRitual());
+        System.out.println("Moonstone Ritual UI: " + moonstoneRitualUI.render(
+            List.of(new ItemStack("moonstone", 2), new ItemStack("amethyst_block", 1)),
+            inventory
+        ));
+        UiActionResult<ItemStack> blessing = moonstoneRitualUI.perform(
             List.of(new ItemStack("moonstone", 2), new ItemStack("amethyst_block", 1)),
             inventory
         );
-        System.out.println("Moonstone ritual: " + blessing);
+        System.out.println("Moonstone ritual: " + blessing.payload().orElse(null));
 
         StarlightPool starlightPool = new StarlightPool(60);
-        Optional<ItemStack> altarResult = mod.getCelestialAltar().perform(
+        CelestialAltarUI celestialAltarUI = new CelestialAltarUI(mod.getCelestialAltar());
+        System.out.println("Celestial Altar UI: " + celestialAltarUI.render(
+            List.of(
+                new ItemStack("moonstone", 2),
+                new ItemStack("nether_star", 1),
+                new ItemStack("diamond_block", 2)
+            ),
+            inventory,
+            starlightPool
+        ));
+        UiActionResult<ItemStack> altarResult = celestialAltarUI.perform(
             List.of(
                 new ItemStack("moonstone", 2),
                 new ItemStack("nether_star", 1),
@@ -327,26 +398,38 @@ public final class InsaneCraftMod {
             inventory,
             starlightPool
         );
-        System.out.println("Celestial altar: " + altarResult.orElse(null));
+        System.out.println("Celestial altar: " + altarResult.payload().orElse(null));
         System.out.println("Starlight remaining: " + starlightPool.getStarlight());
 
-        Optional<StormTotemCharge> stormCharge = mod.getStormTotem().charge(
+        StormTotemUI stormTotemUI = new StormTotemUI(mod.getStormTotem());
+        System.out.println("Storm Totem UI: " + stormTotemUI.render(
+            List.of(new ItemStack("storm_core", 1), new ItemStack("lightning_rod", 1)),
+            inventory
+        ));
+        UiActionResult<StormTotemCharge> stormCharge = stormTotemUI.charge(
             List.of(new ItemStack("storm_core", 1), new ItemStack("lightning_rod", 1)),
             inventory
         );
-        System.out.println("Storm totem charge: " + stormCharge.orElse(null));
+        System.out.println("Storm totem charge: " + stormCharge.payload().orElse(null));
 
         VoidHarvesterState harvesterState = new VoidHarvesterState(VoidHarvesterTier.BASIC, 0);
-        boolean fueled = mod.getVoidHarvester().addFuel(new ItemStack("void_fuel", 20), inventory, harvesterState);
-        System.out.println("Void harvester fueled: " + fueled);
-        Optional<ItemStack> harvested = mod.getVoidHarvester().harvest(harvesterState);
-        System.out.println("Void harvester output: " + harvested.orElse(null));
-        Optional<VoidHarvesterTier> upgraded = mod.getVoidHarvester().upgrade(
+        VoidHarvesterUI voidHarvesterUI = new VoidHarvesterUI(mod.getVoidHarvester());
+        System.out.println("Void Harvester UI (before): " + voidHarvesterUI.render(harvesterState, inventory));
+        UiActionResult<VoidHarvesterState> fueled = voidHarvesterUI.addFuel(
+            new ItemStack("void_fuel", 20),
+            inventory,
+            harvesterState
+        );
+        System.out.println("Void harvester fueled: " + fueled.success());
+        UiActionResult<ItemStack> harvested = voidHarvesterUI.harvest(inventory, harvesterState);
+        System.out.println("Void harvester output: " + harvested.payload().orElse(null));
+        UiActionResult<VoidHarvesterTier> upgraded = voidHarvesterUI.upgrade(
             harvesterState,
             List.of(new ItemStack("void_fragment", 8), new ItemStack("ruby_gem", 2)),
             inventory
         );
-        System.out.println("Void harvester upgrade: " + upgraded.orElse(null));
+        System.out.println("Void harvester upgrade: " + upgraded.payload().orElse(null));
+        System.out.println("Void Harvester UI (after): " + voidHarvesterUI.render(harvesterState, inventory));
 
         System.out.println("Inventory: " + inventory);
         System.out.println("Materials: " + mod.getMaterialRegistry().getMaterials());
