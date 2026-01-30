@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "insanecraft",
+  "version": "${version}",
+  "name": "InsaneCraft",
+  "description": "InsaneCraft progression systems and mechanics.",
+  "authors": [
+    "InsaneCraft"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.insanecraft.fabric.InsaneCraftFabricMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.22",
+    "fabric": "*",
+    "minecraft": "1.20.1"
+  }
+}
