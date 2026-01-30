@@ -1,10 +1,13 @@
 {
-  "itemGroup.insanecraft": "InsaneCraft",
+  "item.insanecraft.diamond_block_wall": "Diamond Block Wall",
+  "item.insanecraft.iron_geode": "Iron Geode",
+  "item.insanecraft.moonstone": "Moonstone",
+  "block.insanecraft.ore_upgrader": "Ore Upgrader",
   "block.insanecraft.overenchantment_table": "Overenchantment Table",
   "block.insanecraft.xp_generator": "XP Generator",
-  "block.insanecraft.ruby_forge": "Ruby Forge",
-  "block.insanecraft.moonstone_ritual": "Moonstone Ritual",
-  "block.insanecraft.celestial_altar": "Celestial Altar",
-  "block.insanecraft.storm_totem": "Storm Totem",
-  "block.insanecraft.void_harvester": "Void Harvester"
+  "message.insanecraft.ore_upgrader.invalid": "No upgrade found for that item.",
+  "message.insanecraft.ore_upgrader.missing_diamonds": "You need 4 Diamond Blocks to craft the Overenchantment Table.",
+  "message.insanecraft.xp_generator.upgraded": "XP Generator upgraded to level %s.",
+  "message.insanecraft.xp_generator.max": "XP Generator is already at max level.",
+  "message.insanecraft.xp_generator.collect": "Collected %s XP from level %s generator."
 }

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "insanecraft:block/ore_upgrader"
+    }
+  }
+}
